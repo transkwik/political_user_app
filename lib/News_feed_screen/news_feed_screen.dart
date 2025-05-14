@@ -326,270 +326,531 @@ class _NewsFeedPageState extends State<NewsFeedPage> {
   Widget _buildTabContent() {
     switch (_selectedTabIndex) {
       case 0:
-        return Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: _controllers.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.symmetric(vertical: 1, horizontal: 0),
-                decoration: BoxDecoration(
-                  color: tWhite,
-                  // borderRadius: BorderRadius.circular(10),
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.grey.withOpacity(0.2),
-                  //     spreadRadius: 1,
-                  //     blurRadius: 5,
-                  //     offset: Offset(0, 3), // changes position of shadow
-                  //   ),
-                  // ],
+        return
+        PageView.builder(
+  itemCount: _controllers.length,
+  scrollDirection: Axis.vertical, // Or Axis.horizontal
+  itemBuilder: (context, index) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 1, horizontal: 0),
+      decoration: BoxDecoration(
+        color: tWhite,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // User Info
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+  ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Colors.brown,
+              backgroundImage: NetworkImage(
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz0jx3eI5vppGWKkWiqe4gc18qKIF-Uxq7dA&s"),
+            ),
+            title: Text(
+              "SRP",
+              style: GoogleFonts.manrope(
+                  color: tBlack,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w700),
+            ),
+            subtitle: Text(
+              "20 Mar 2025",
+              style: GoogleFonts.manrope(
+                  color: tGray,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w500),
+            ),
+            trailing: Icon(
+              Icons.more_vert,
+              color: tPrimaryColor,
+            ),
+          ),
+
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Major Rally for Farmers Rights in Delhi",
+                  style: GoogleFonts.manrope(
+                      color: tBlack,
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.w400),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // User Info
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.brown,
-                        backgroundImage: NetworkImage(
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz0jx3eI5vppGWKkWiqe4gc18qKIF-Uxq7dA&s"),
+                Text(
+                  "Read More",
+                  style: GoogleFonts.manrope(
+                      color: tBlue,
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.w400),
+                ),
+                Text(
+                  "#milestone #achievement ",
+                  style: GoogleFonts.manrope(
+                      color: tPrimaryColor,
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
+          ),
+         
+         
+          ],
+        ),
+         
+          // SizedBox(height: 0.6.h),
+
+          // Video Player
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+  width: double.infinity,
+  // Limit the height to avoid overflow
+  height: MediaQuery.of(context).size.height * 0.5, // adjust as needed
+  child: _controllers[index].value.isInitialized
+      ? AspectRatio(
+          aspectRatio: _controllers[index].value.aspectRatio,
+          child: VideoPlayer(_controllers[index]),
+        )
+      : Center(child: CircularProgressIndicator()),
+),
+
+              // _controllers[index].value.isInitialized
+              //     ? AspectRatio(
+              //         aspectRatio: _controllers[index].value.aspectRatio,
+              //         child: VideoPlayer(_controllers[index]),
+              //       )
+              //     : AspectRatio(
+              //         aspectRatio: _controllers[index].value.aspectRatio,
+              //         child: Center(child: CircularProgressIndicator()),
+              //       ),
+              GestureDetector(
+                onTap: () => _playVideo(index),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            color: Colors.black.withOpacity(0.2),
+                          ),
+                        ),
                       ),
-                      title: Text(
-                        "SRP",
-                        style: GoogleFonts.manrope(
-                            color: tBlack,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700),
+                      CircleAvatar(
+                        maxRadius: 40,
+                        backgroundColor: Colors.transparent,
+                        child: Icon(
+                          size: 40,
+                          color: Colors.white,
+                          _controllers[index].value.isPlaying
+                              ? Icons.pause_rounded
+                              : Icons.play_arrow_rounded,
+                        ),
                       ),
-                      subtitle: Text(
-                        "20 Mar 2025",
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+       
+         Column(
+          children: [
+             Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 8),
+            child: Row(
+              children: [
+                Icon(Icons.download_outlined, color: Colors.grey, size: 20),
+                SizedBox(width: 4),
+                Text(
+                  "45",
+                  style: GoogleFonts.wixMadeforDisplay(
+                      color: tGray, fontSize: 10.sp, fontWeight: FontWeight.w600),
+                ),
+                Spacer(),
+                Icon(Icons.remove_red_eye_outlined, color: tGray, size: 18),
+                SizedBox(width: 4),
+                Text(
+                  "165",
+                  style: GoogleFonts.wixMadeforDisplay(
+                      color: tGray, fontSize: 10.sp, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+          ),
+
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  margin: EdgeInsets.symmetric(horizontal: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(Icons.share_outlined, color: tPrimaryColor),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                  margin: EdgeInsets.symmetric(horizontal: 4),
+                  decoration: ShapeDecoration(
+                    color: tSecondaryGreen,
+                    shape: SmoothRectangleBorder(
+                      borderRadius: SmoothBorderRadius(
+                        cornerRadius: isTab(context) ? 10 : 13,
+                        cornerSmoothing: 1.0,
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Image.network(
+                        "https://static.vecteezy.com/system/resources/thumbnails/021/495/979/small/whatsapp-social-media-logo-icon-free-png.png",
+                        height: 20,
+                        width: 20,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        "Whatsapp",
                         style: GoogleFonts.manrope(
-                            color: tGray,
+                            color: tWhite,
                             fontSize: 10.sp,
                             fontWeight: FontWeight.w500),
                       ),
-                      trailing: Icon(
-                        Icons.more_vert,
-                        color: tPrimaryColor,
-                      ),
-                    ),
-
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Major Rally for Farmers Rights in Delhi",
-                            style: GoogleFonts.manrope(
-                                color: tBlack,
-                                fontSize: 9.sp,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          Text(
-                            "Read More",
-                            style: GoogleFonts.manrope(
-                                color: tBlue,
-                                fontSize: 9.sp,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          Text(
-                            "#milestone #achievement ",
-                            style: GoogleFonts.manrope(
-                                color: tPrimaryColor,
-                                fontSize: 9.sp,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 0.6.h,
-                    ),
-                    // Video Player
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        _controllers[index].value.isInitialized
-                            ? AspectRatio(
-                                aspectRatio:
-                                    _controllers[index].value.aspectRatio,
-                                child: VideoPlayer(_controllers[index]),
-                              )
-                            : AspectRatio(
-                                aspectRatio:
-                                    _controllers[index].value.aspectRatio,
-                                child:
-                                    Center(child: CircularProgressIndicator())),
-                        GestureDetector(
-                          onTap: () => _playVideo(index),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                // Background blur
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      100), // match the CircleAvatar
-                                  child: BackdropFilter(
-                                    filter: ImageFilter.blur(
-                                        sigmaX: 10.0, sigmaY: 10.0),
-                                    child: Container(
-                                      width: 70, // double the radius
-                                      height: 70,
-                                      color: Colors.black.withOpacity(
-                                          0.2), // semi-transparent overlay
-                                    ),
-                                  ),
-                                ),
-
-                                // The actual CircleAvatar
-                                CircleAvatar(
-                                  maxRadius: 40,
-                                  backgroundColor: Colors.transparent,
-                                  child: Icon(
-                                    size: 40,
-                                    color: Colors.white,
-                                    _controllers[index].value.isPlaying
-                                        ? Icons.pause_rounded
-                                        : Icons.play_arrow_rounded,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 1.h),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 22, vertical: 8),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.download_outlined,
-                            color: Colors.grey,
-                            size: 20,
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            "45",
-                            style: GoogleFonts.wixMadeforDisplay(
-                                color: tGray,
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Spacer(),
-                          Icon(
-                            Icons.remove_red_eye_outlined,
-                            color: tGray,
-                            size: 18,
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            "165",
-                            style: GoogleFonts.wixMadeforDisplay(
-                                color: tGray,
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              margin: EdgeInsets.symmetric(horizontal: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.white, // Light pink background
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Icon(
-                                Icons.share_outlined,
-                                color: tPrimaryColor,
-                              )),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 10),
-                            margin: EdgeInsets.symmetric(horizontal: 4),
-                            decoration: ShapeDecoration(
-                              color: tSecondaryGreen, // Light pink background
-                              shape: SmoothRectangleBorder(
-                                borderRadius: SmoothBorderRadius(
-                                  cornerRadius: isTab(context) ? 10 : 13,
-                                  cornerSmoothing: 1.0,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Image.network(
-                                  "https://static.vecteezy.com/system/resources/thumbnails/021/495/979/small/whatsapp-social-media-logo-icon-free-png.png",
-                                  height: 20,
-                                  width: 20,
-                                ),
-                                SizedBox(width: 4),
-                                Text(
-                                  "Whatsapp",
-                                  style: GoogleFonts.manrope(
-                                      color: tWhite,
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 8),
-                            margin: EdgeInsets.symmetric(horizontal: 4),
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 0,
-                                  blurRadius: 1,
-                                  offset: Offset(
-                                      0, 1), // changes position of shadow
-                                ),
-                              ],
-                              color: Colors.white, // Light pink background
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(Icons.ads_click_outlined),
-                                SizedBox(width: 4),
-                                Text(
-                                  "Full Video",
-                                  style: GoogleFonts.manrope(
-                                      color: tBlack,
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 8)
-                  ],
+                    ],
+                  ),
                 ),
-              );
-            },
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  margin: EdgeInsets.symmetric(horizontal: 4),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 0,
+                        blurRadius: 1,
+                        offset: Offset(0, 1),
+                      ),
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.ads_click_outlined),
+                      SizedBox(width: 4),
+                      Text(
+                        "Full Video",
+                        style: GoogleFonts.manrope(
+                            color: tBlack,
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        );
+          SizedBox(height: 8),
+          ],
+         )
+        ],
+      ),
+    );
+  },
+);
+
+        
+        //  Expanded(
+        //   child: ListView.builder(
+        //     shrinkWrap: true,
+        //     itemCount: _controllers.length,
+        //     itemBuilder: (context, index) {
+        //       return Container(
+        //         margin: EdgeInsets.symmetric(vertical: 1, horizontal: 0),
+        //         decoration: BoxDecoration(
+        //           color: tWhite,
+        //           // borderRadius: BorderRadius.circular(10),
+        //           // boxShadow: [
+        //           //   BoxShadow(
+        //           //     color: Colors.grey.withOpacity(0.2),
+        //           //     spreadRadius: 1,
+        //           //     blurRadius: 5,
+        //           //     offset: Offset(0, 3), // changes position of shadow
+        //           //   ),
+        //           // ],
+        //         ),
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             // User Info
+        //             ListTile(
+        //               leading: CircleAvatar(
+        //                 backgroundColor: Colors.brown,
+        //                 backgroundImage: NetworkImage(
+        //                     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz0jx3eI5vppGWKkWiqe4gc18qKIF-Uxq7dA&s"),
+        //               ),
+        //               title: Text(
+        //                 "SRP",
+        //                 style: GoogleFonts.manrope(
+        //                     color: tBlack,
+        //                     fontSize: 12.sp,
+        //                     fontWeight: FontWeight.w700),
+        //               ),
+        //               subtitle: Text(
+        //                 "20 Mar 2025",
+        //                 style: GoogleFonts.manrope(
+        //                     color: tGray,
+        //                     fontSize: 10.sp,
+        //                     fontWeight: FontWeight.w500),
+        //               ),
+        //               trailing: Icon(
+        //                 Icons.more_vert,
+        //                 color: tPrimaryColor,
+        //               ),
+        //             ),
+
+        //             Padding(
+        //               padding: EdgeInsets.symmetric(horizontal: 20),
+        //               child: Column(
+        //                 crossAxisAlignment: CrossAxisAlignment.start,
+        //                 mainAxisAlignment: MainAxisAlignment.start,
+        //                 children: [
+        //                   Text(
+        //                     "Major Rally for Farmers Rights in Delhi",
+        //                     style: GoogleFonts.manrope(
+        //                         color: tBlack,
+        //                         fontSize: 9.sp,
+        //                         fontWeight: FontWeight.w400),
+        //                   ),
+        //                   Text(
+        //                     "Read More",
+        //                     style: GoogleFonts.manrope(
+        //                         color: tBlue,
+        //                         fontSize: 9.sp,
+        //                         fontWeight: FontWeight.w400),
+        //                   ),
+        //                   Text(
+        //                     "#milestone #achievement ",
+        //                     style: GoogleFonts.manrope(
+        //                         color: tPrimaryColor,
+        //                         fontSize: 9.sp,
+        //                         fontWeight: FontWeight.w400),
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
+        //             SizedBox(
+        //               height: 0.6.h,
+        //             ),
+        //             // Video Player
+        //             Stack(
+        //               alignment: Alignment.center,
+        //               children: [
+        //                 _controllers[index].value.isInitialized
+        //                     ? AspectRatio(
+        //                         aspectRatio:
+        //                             _controllers[index].value.aspectRatio,
+        //                         child: VideoPlayer(_controllers[index]),
+        //                       )
+        //                     : AspectRatio(
+        //                         aspectRatio:
+        //                             _controllers[index].value.aspectRatio,
+        //                         child:
+        //                             Center(child: CircularProgressIndicator())),
+        //                 GestureDetector(
+        //                   onTap: () => _playVideo(index),
+        //                   child: Padding(
+        //                     padding: EdgeInsets.all(8.0),
+        //                     child: Stack(
+        //                       alignment: Alignment.center,
+        //                       children: [
+        //                         // Background blur
+        //                         ClipRRect(
+        //                           borderRadius: BorderRadius.circular(
+        //                               100), // match the CircleAvatar
+        //                           child: BackdropFilter(
+        //                             filter: ImageFilter.blur(
+        //                                 sigmaX: 10.0, sigmaY: 10.0),
+        //                             child: Container(
+        //                               width: 70, // double the radius
+        //                               height: 70,
+        //                               color: Colors.black.withOpacity(
+        //                                   0.2), // semi-transparent overlay
+        //                             ),
+        //                           ),
+        //                         ),
+
+        //                         // The actual CircleAvatar
+        //                         CircleAvatar(
+        //                           maxRadius: 40,
+        //                           backgroundColor: Colors.transparent,
+        //                           child: Icon(
+        //                             size: 40,
+        //                             color: Colors.white,
+        //                             _controllers[index].value.isPlaying
+        //                                 ? Icons.pause_rounded
+        //                                 : Icons.play_arrow_rounded,
+        //                           ),
+        //                         ),
+        //                       ],
+        //                     ),
+        //                   ),
+        //                 ),
+        //               ],
+        //             ),
+                   
+                   
+                   
+                   
+        //             SizedBox(height: 1.h),
+        //             Padding(
+        //               padding: const EdgeInsets.symmetric(
+        //                   horizontal: 22, vertical: 8),
+        //               child: Row(
+        //                 children: [
+        //                   Icon(
+        //                     Icons.download_outlined,
+        //                     color: Colors.grey,
+        //                     size: 20,
+        //                   ),
+        //                   SizedBox(width: 4),
+        //                   Text(
+        //                     "45",
+        //                     style: GoogleFonts.wixMadeforDisplay(
+        //                         color: tGray,
+        //                         fontSize: 10.sp,
+        //                         fontWeight: FontWeight.w600),
+        //                   ),
+        //                   Spacer(),
+        //                   Icon(
+        //                     Icons.remove_red_eye_outlined,
+        //                     color: tGray,
+        //                     size: 18,
+        //                   ),
+        //                   SizedBox(width: 4),
+        //                   Text(
+        //                     "165",
+        //                     style: GoogleFonts.wixMadeforDisplay(
+        //                         color: tGray,
+        //                         fontSize: 10.sp,
+        //                         fontWeight: FontWeight.w600),
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
+        //             Padding(
+        //               padding: EdgeInsets.symmetric(horizontal: 10),
+        //               child: Row(
+        //                 crossAxisAlignment: CrossAxisAlignment.start,
+        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                 children: [
+        //                   Container(
+        //                       padding: EdgeInsets.symmetric(
+        //                           horizontal: 10, vertical: 10),
+        //                       margin: EdgeInsets.symmetric(horizontal: 4),
+        //                       decoration: BoxDecoration(
+        //                         color: Colors.white, // Light pink background
+        //                         borderRadius: BorderRadius.circular(10),
+        //                       ),
+        //                       child: Icon(
+        //                         Icons.share_outlined,
+        //                         color: tPrimaryColor,
+        //                       )),
+        //                   Container(
+        //                     padding: EdgeInsets.symmetric(
+        //                         horizontal: 25, vertical: 10),
+        //                     margin: EdgeInsets.symmetric(horizontal: 4),
+        //                     decoration: ShapeDecoration(
+        //                       color: tSecondaryGreen, // Light pink background
+        //                       shape: SmoothRectangleBorder(
+        //                         borderRadius: SmoothBorderRadius(
+        //                           cornerRadius: isTab(context) ? 10 : 13,
+        //                           cornerSmoothing: 1.0,
+        //                         ),
+        //                       ),
+        //                     ),
+        //                     child: Row(
+        //                       children: [
+        //                         Image.network(
+        //                           "https://static.vecteezy.com/system/resources/thumbnails/021/495/979/small/whatsapp-social-media-logo-icon-free-png.png",
+        //                           height: 20,
+        //                           width: 20,
+        //                         ),
+        //                         SizedBox(width: 4),
+        //                         Text(
+        //                           "Whatsapp",
+        //                           style: GoogleFonts.manrope(
+        //                               color: tWhite,
+        //                               fontSize: 10.sp,
+        //                               fontWeight: FontWeight.w500),
+        //                         ),
+        //                       ],
+        //                     ),
+        //                   ),
+        //                   Container(
+        //                     padding: EdgeInsets.symmetric(
+        //                         horizontal: 10, vertical: 8),
+        //                     margin: EdgeInsets.symmetric(horizontal: 4),
+        //                     decoration: BoxDecoration(
+        //                       boxShadow: [
+        //                         BoxShadow(
+        //                           color: Colors.grey.withOpacity(0.2),
+        //                           spreadRadius: 0,
+        //                           blurRadius: 1,
+        //                           offset: Offset(
+        //                               0, 1), // changes position of shadow
+        //                         ),
+        //                       ],
+        //                       color: Colors.white, // Light pink background
+        //                       borderRadius: BorderRadius.circular(12),
+        //                     ),
+        //                     child: Row(
+        //                       children: [
+        //                         Icon(Icons.ads_click_outlined),
+        //                         SizedBox(width: 4),
+        //                         Text(
+        //                           "Full Video",
+        //                           style: GoogleFonts.manrope(
+        //                               color: tBlack,
+        //                               fontSize: 10.sp,
+        //                               fontWeight: FontWeight.w500),
+        //                         ),
+        //                       ],
+        //                     ),
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
+        //             SizedBox(height: 8)
+        //           ],
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // );
+     
+     
+     
       case 1:
         return Expanded(
           child: ListView.builder(
